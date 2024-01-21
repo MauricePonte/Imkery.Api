@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Imkery.Infrastructure\Imkery.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Identity.db" />
+  </ItemGroup>
+
 </Project>
