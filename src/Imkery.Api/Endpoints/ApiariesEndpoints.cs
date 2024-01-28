@@ -11,7 +11,7 @@ public static class ApiariesEndpoints
     {
         var groupBuilder = builder.MapGroup("api/apiaries");
 
-        groupBuilder.MapPost(string.Empty, async(CreateApiaryRequest request, ISender sender) => CreateApiary)
+        groupBuilder.MapPost(string.Empty, CreateApiary)
             .WithName(nameof(CreateApiary));
 
         groupBuilder.MapGet("{apiaryId:guid}", GetApiary)

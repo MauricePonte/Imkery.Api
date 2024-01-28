@@ -5,7 +5,6 @@ using Imkery.Infrastructure.Apiaries.Persistence;
 using Imkery.Infrastructure.Common.Interceptors;
 using Imkery.Infrastructure.Common.Persistence;
 using Imkery.Infrastructure.Hives.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,22 +15,7 @@ public static class DependencyInjection
     {
         services
             .AddApplicationDbContext()
-            .AddIdentityDbContext()
             .AddRepositories();
-
-        return services;
-    }
-
-    private static IServiceCollection AddIdentityDbContext(this IServiceCollection services)
-    {
-        services.AddDbContext<UserDbContext>((serviceProvider, options) =>
-        {
-            options.UseSqlite("Data source = Identity.db");
-        });
-
-        services
-            .AddIdentityCore<IdentityUser>()
-            .AddEntityFrameworkStores<UserDbContext>();
 
         return services;
     }
@@ -45,10 +29,7 @@ public static class DependencyInjection
             options.AddInterceptors(serviceProvider.GetRequiredService<PublishDomainEventsInterceptor>());
         });
 
-        services.AddScoped<IUnitOfWork>(serviceProvider =>
-        {
-            return serviceProvider.GetRequiredService<ApplicationDbContext>();
-        });
+        services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
 
         return services;
     }
