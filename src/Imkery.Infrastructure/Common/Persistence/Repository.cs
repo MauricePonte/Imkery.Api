@@ -1,7 +1,8 @@
 ﻿using Imkery.Domain.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Imkery.Infrastructure.Common.Persistence;
-internal abstract class Repository<TEntity>(ApplicationDbContext dbContext)
+internal abstract class Repository<TEntity>(DbContext dbContext)
     : IRepository<TEntity> where TEntity : Entity
 {
     public async Task CreateAsync(TEntity entity, CancellationToken cancellationToken)

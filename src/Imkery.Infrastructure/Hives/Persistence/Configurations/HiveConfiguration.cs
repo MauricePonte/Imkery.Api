@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Imkery.Infrastructure.Hives.Persistence;
+namespace Imkery.Infrastructure.Hives.Persistence.Configurations;
 internal class HiveConfiguration : IEntityTypeConfiguration<Hive>
 {
     public void Configure(EntityTypeBuilder<Hive> builder)

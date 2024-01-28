@@ -19,9 +19,10 @@ public static class HivesEndpoints
 
         var result = await sender.Send(command);
 
-        return result.Match<IResult>(
-            hive => TypedResults.Ok(
-                new HiveResponse(HiveId: hive.HiveId)),
-            error => TypedResults.Problem());
+        return result.Match<IResult>
+        (
+            onValue: hive => TypedResults.Ok(new HiveResponse(HiveId: hive.HiveId)),
+            onError: _ => TypedResults.Problem()
+        );
     }
 }

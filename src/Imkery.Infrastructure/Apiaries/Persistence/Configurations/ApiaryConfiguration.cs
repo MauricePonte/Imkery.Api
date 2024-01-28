@@ -3,7 +3,7 @@ using Imkery.Infrastructure.Common.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Imkery.Infrastructure.Apiaries.Persistence;
+namespace Imkery.Infrastructure.Apiaries.Persistence.Configurations;
 internal class ApiaryConfiguration : IEntityTypeConfiguration<Apiary>
 {
     public void Configure(EntityTypeBuilder<Apiary> builder)

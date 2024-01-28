@@ -8,8 +8,8 @@ namespace Imkery.Infrastructure.Common.Persistence;
 internal class ApplicationDbContext(DbContextOptions options)
     : DbContext(options), IUnitOfWork
 {
-    public DbSet<Apiary> Apiaries { get; set; } = null!;
-    public DbSet<Hive> Hives { get; set; } = null!;
+    public DbSet<Apiary> Apiaries { get; } = null!;
+    public DbSet<Hive> Hives { get; } = null!;
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {

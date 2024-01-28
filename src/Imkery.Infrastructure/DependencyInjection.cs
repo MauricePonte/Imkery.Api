@@ -1,10 +1,13 @@
 ﻿using Imkery.Application.Common.Interfaces;
 using Imkery.Domain.Apiaries;
 using Imkery.Domain.Hives;
-using Imkery.Infrastructure.Apiaries.Persistence;
+using Imkery.Domain.Inspections;
+using Imkery.Domain.Inspections.Repositories;
+using Imkery.Infrastructure.Apiaries.Persistence.Repositories;
 using Imkery.Infrastructure.Common.Interceptors;
 using Imkery.Infrastructure.Common.Persistence;
-using Imkery.Infrastructure.Hives.Persistence;
+using Imkery.Infrastructure.Hives.Persistence.Repositories;
+using Imkery.Infrastructure.Inspections.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,7 +41,9 @@ public static class DependencyInjection
     {
         services
             .AddScoped<IApiariesRepository, ApiariesRepository>()
-            .AddScoped<IHivesRepository, HivesRepository>();
+            .AddScoped<IHivesRepository, HivesRepository>()
+            .AddScoped<IInspectionsRepository, InspectionsRepository>()
+            .AddScoped<IInspectionItemsRepository, InspectionItemsRepository>();
         return services;
     }
 }

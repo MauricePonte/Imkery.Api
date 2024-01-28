@@ -7,14 +7,14 @@ using MediatR;
 
 namespace Imkery.Application.Hives.Commands.CreateHive;
 
-public class CreateHiveCommandHandler(IApiariesRepository _apiariesRepository, IUnitOfWork _unitOfWork)
+public class CreateHiveCommandHandler(IApiariesRepository apiariesRepository, IUnitOfWork unitOfWork)
     : IRequestHandler<CreateHiveCommand, ErrorOr<HiveResponse>>
 {
     public async Task<ErrorOr<HiveResponse>> Handle(CreateHiveCommand request, CancellationToken cancellationToken)
     {
         var hive = new Hive();
 
-        var apiary = await _apiariesRepository.GetByIdAsync(request.ApiaryId, cancellationToken);
+        var apiary = await apiariesRepository.GetByIdAsync(request.ApiaryId, cancellationToken);
         if (apiary is null)
         {
             return Error.NotFound(description: "Apiary not found"); // TODO: resource? 
@@ -26,7 +26,7 @@ public class CreateHiveCommandHandler(IApiariesRepository _apiariesRepository, I
             return addedToHiveResult.Errors;
         }
 
-        await _unitOfWork.CommitChangesAsync();
+        await unitOfWork.CommitChangesAsync();
         return new HiveResponse(hive.Id);
     }
 }
