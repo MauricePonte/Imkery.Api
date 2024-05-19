@@ -5,7 +5,8 @@ using Imkery.Domain.Locations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Imkery.Infrastructure.Common.Persistence;
-internal class ApplicationDbContext(DbContextOptions options)
+
+public class ApplicationDbContext(DbContextOptions options)
     : DbContext(options), IUnitOfWork
 {
     public DbSet<Apiary> Apiaries { get; set; } = null!;

@@ -7,6 +7,7 @@ using Imkery.Infrastructure.Common.Persistence;
 using Imkery.Infrastructure.Hives.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Imkery.Infrastructure;
 public static class DependencyInjection
@@ -40,5 +41,16 @@ public static class DependencyInjection
             .AddScoped<IApiariesRepository, ApiariesRepository>()
             .AddScoped<IHivesRepository, HivesRepository>();
         return services;
+    }
+
+    public static void EnsureDevelopmentInfrastructure(this IHost app)
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+            dbContext?.Database.EnsureDeleted();
+            dbContext?.Database.EnsureCreated();
+        }
     }
 }

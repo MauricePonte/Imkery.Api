@@ -1,4 +1,5 @@
 ﻿using Imkery.Domain.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Imkery.Infrastructure.Common.Persistence;
 internal abstract class Repository<TEntity>(ApplicationDbContext dbContext)
@@ -12,6 +13,11 @@ internal abstract class Repository<TEntity>(ApplicationDbContext dbContext)
     public async Task<TEntity?> GetByIdAsync(Guid itemId, CancellationToken cancellationToken)
     {
         return await dbContext.Set<TEntity>().FindAsync(itemId, cancellationToken);
+    }
+
+    public async Task<ICollection<TEntity>> GetCollectionAsync(CancellationToken cancellationToken)
+    {
+        return await dbContext.Set<TEntity>().ToListAsync(cancellationToken);
     }
 
     public void Update(TEntity entity, CancellationToken cancellationToken)

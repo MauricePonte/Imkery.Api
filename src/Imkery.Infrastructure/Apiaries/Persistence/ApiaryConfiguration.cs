@@ -1,5 +1,4 @@
 ﻿using Imkery.Domain.Apiaries;
-using Imkery.Infrastructure.Common.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -12,9 +11,9 @@ internal class ApiaryConfiguration : IEntityTypeConfiguration<Apiary>
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
 
-        builder.Property<List<Guid>>("_hiveIds") // TODO: Fix
-            .HasColumnName("HiveIds")
-            .HasListOfIdsConverter();
+        //builder.Property<List<Guid>>("_hiveIds") // TODO: Fix
+        //    .HasColumnName("HiveIds")
+        //    .HasListOfIdsConverter();
 
         builder.Property(x => x.Name);
 

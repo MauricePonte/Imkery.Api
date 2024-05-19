@@ -2,7 +2,10 @@
 using Imkery.Domain.Apiaries;
 using MediatR;
 
-namespace Imkery.Application.Apiaries.Queries.GetApiaryQuery;
+namespace Imkery.Application.Apiaries.Queries;
+
+public record GetApiaryQuery(Guid ApiaryId)
+    : IRequest<ErrorOr<Apiary>>;
 
 public class GetApiaryQueryHandler(IApiariesRepository _apiariesRepository)
     : IRequestHandler<GetApiaryQuery, ErrorOr<Apiary>>

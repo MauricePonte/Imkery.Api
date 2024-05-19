@@ -4,7 +4,9 @@ using Imkery.Domain.Apiaries;
 using Imkery.Domain.Locations;
 using MediatR;
 
-namespace Imkery.Application.Apiaries.Commands.CreateApiary;
+namespace Imkery.Application.Apiaries.Commands;
+public record CreateApiaryCommand(string Name, decimal Latitude, decimal Longitude)
+    : IRequest<ErrorOr<Apiary>>;
 
 public class CreateApiaryCommandHandler(IApiariesRepository _apiariesRepository, IUnitOfWork _unitOfWork)
     : IRequestHandler<CreateApiaryCommand, ErrorOr<Apiary>>
@@ -14,7 +16,7 @@ public class CreateApiaryCommandHandler(IApiariesRepository _apiariesRepository,
         var apiary = new Apiary
         (
             name: request.Name,
-            location: new Coordinates((int)request.Latitude, (int)request.Longitude)
+            location: new Coordinates(request.Latitude, request.Longitude)
         );
 
         await _apiariesRepository.CreateAsync(apiary, cancellationToken);

@@ -1,5 +1,5 @@
-﻿using Imkery.Application.Apiaries.Commands.CreateApiary;
-using Imkery.Application.Apiaries.Queries.GetApiaryQuery;
+﻿using Imkery.Application.Apiaries.Commands;
+using Imkery.Application.Apiaries.Queries;
 using Imkery.Contracts.Apiaries;
 using MediatR;
 
@@ -16,6 +16,9 @@ public static class ApiariesEndpoints
 
         groupBuilder.MapGet("{apiaryId:guid}", GetApiary)
             .WithName(nameof(GetApiary));
+
+        groupBuilder.MapGet(string.Empty, GetApiaries)
+            .WithName(nameof(GetApiaries));
     }
 
     public static async Task<IResult> CreateApiary(CreateApiaryRequest request, ISender sender)
@@ -48,6 +51,22 @@ public static class ApiariesEndpoints
                 Name: apiary.Name,
                 Latitude: apiary.Coordinate.Latitude,
                 Longitude: apiary.Coordinate.Longitude)),
+            error => Results.Problem());
+    }
+
+    public static async Task<IResult> GetApiaries(ISender sender)
+    {
+        var query = new GetApiariesQuery();
+
+        var result = await sender.Send(query);
+
+        return result.Match(
+            apiaries => Results.Ok(apiaries.Select(
+                apiary => new ApiaryResponse(
+                    Id: apiary.Id,
+                    Name: apiary.Name,
+                    Latitude: apiary.Coordinate.Latitude,
+                    Longitude: apiary.Coordinate.Longitude))),
             error => Results.Problem());
     }
 }

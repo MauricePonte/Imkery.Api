@@ -9,8 +9,8 @@ public class Apiary : Entity
 {
     private readonly List<Guid> _hiveIds = [];
 
-    public string Name { get; } = string.Empty;
-    public Coordinates Coordinate { get; } = null!;
+    public string Name { get; private set; } = string.Empty;
+    public Coordinates Coordinate { get; private set; } = null!;
     
     public Apiary(string name, Coordinates location, Guid? id = null) 
         : base(id)
