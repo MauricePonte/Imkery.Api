@@ -4,9 +4,7 @@ using Imkery.Domain.Apiaries;
 using Imkery.Domain.Locations;
 using MediatR;
 
-namespace Imkery.Application.Apiaries.Commands;
-public record CreateApiaryCommand(string Name, decimal Latitude, decimal Longitude)
-    : IRequest<ErrorOr<Apiary>>;
+namespace Imkery.Application.Apiaries.Commands.CreateApiary;
 
 public class CreateApiaryCommandHandler(IApiariesRepository _apiariesRepository, IUnitOfWork _unitOfWork)
     : IRequestHandler<CreateApiaryCommand, ErrorOr<Apiary>>

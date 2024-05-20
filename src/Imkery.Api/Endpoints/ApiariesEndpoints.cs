@@ -1,4 +1,4 @@
-﻿using Imkery.Application.Apiaries.Commands;
+﻿using Imkery.Application.Apiaries.Commands.CreateApiary;
 using Imkery.Application.Apiaries.Queries;
 using Imkery.Contracts.Apiaries;
 using MediatR;
