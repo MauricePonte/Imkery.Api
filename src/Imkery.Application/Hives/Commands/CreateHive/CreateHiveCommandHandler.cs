@@ -12,14 +12,13 @@ public class CreateHiveCommandHandler(IApiariesRepository _apiariesRepository, I
 {
     public async Task<ErrorOr<HiveResponse>> Handle(CreateHiveCommand request, CancellationToken cancellationToken)
     {
-        var hive = new Hive();
-
         var apiary = await _apiariesRepository.GetByIdAsync(request.ApiaryId, cancellationToken);
         if (apiary is null)
         {
             return Error.NotFound(description: "Apiary not found"); // TODO: resource? 
         }
 
+        var hive = new Hive();
         var addedToHiveResult = apiary.AddHive(hive);
         if (addedToHiveResult.IsError)
         {

@@ -3,6 +3,7 @@ using Imkery.Domain.Apiaries.Events;
 using Imkery.Domain.Common;
 using Imkery.Domain.Hives;
 using Imkery.Domain.Locations;
+using Throw;
 
 namespace Imkery.Domain.Apiaries;
 public class Apiary : Entity
@@ -21,6 +22,8 @@ public class Apiary : Entity
 
     public ErrorOr<Success> AddHive(Hive hive)
     {
+        _hiveIds.Throw().IfContains(hive.Id);
+
         _hiveIds.Add(hive.Id);
 
         RaiseDomainEvent(new HiveAddedEvent(hive));

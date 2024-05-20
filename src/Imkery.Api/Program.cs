@@ -7,23 +7,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddInfrastructure()
-    .AddPresentation()
-    .AddApplication();
+    .AddApplication()
+    .AddPresentation();
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseExceptionHandler();
 
-    app.EnsureDevelopmentInfrastructure();
+    if (app.Environment.IsDevelopment())
+    {
+        app.EnsureDevelopmentInfrastructure();
+        
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
+    app.UseHttpsRedirection();
+
+    app.MapApiaryEndpoints();
+    app.MapHivesEndpoints();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.MapApiaryEndpoints();
-app.MapHivesEndpoints();
-
-app.Run();

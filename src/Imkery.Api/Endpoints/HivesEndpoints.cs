@@ -1,4 +1,5 @@
-﻿using Imkery.Application.Hives.Commands.CreateHive;
+﻿using Imkery.Api.Endpoints.Common.ErrorHandling;
+using Imkery.Application.Hives.Commands.CreateHive;
 using Imkery.Contracts.Hives;
 using MediatR;
 
@@ -19,9 +20,9 @@ public static class HivesEndpoints
 
         var result = await sender.Send(command);
 
-        return result.Match<IResult>(
+        return result.Match(
             hive => TypedResults.Ok(
                 new HiveResponse(HiveId: hive.HiveId)),
-            error => TypedResults.Problem());
+            Problem.HandleProblem);
     }
 }

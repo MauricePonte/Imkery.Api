@@ -6,7 +6,8 @@ public static class DependencyInjection
     {
         services
             .AddEndpointsApiExplorer()
-            .AddSwaggerGen();
+            .AddSwaggerGen()
+            .AddProblemDetails();
 
         return services;
     }
