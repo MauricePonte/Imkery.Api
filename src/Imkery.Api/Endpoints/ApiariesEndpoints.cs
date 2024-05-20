@@ -1,4 +1,5 @@
-﻿using Imkery.Application.Apiaries.Commands.CreateApiary;
+﻿using Imkery.Api.Endpoints.Common.ErrorHandling;
+using Imkery.Application.Apiaries.Commands.CreateApiary;
 using Imkery.Application.Apiaries.Queries;
 using Imkery.Contracts.Apiaries;
 using MediatR;
@@ -36,7 +37,7 @@ public static class ApiariesEndpoints
                 Name: request.Name,
                 Latitude: request.Latitude,
                 Longitude: request.Longitude)),
-            error => Results.Problem());
+            Problem.HandleProblem);
     }
 
     public static async Task<IResult> GetApiary(Guid apiaryId, ISender sender)
@@ -51,7 +52,7 @@ public static class ApiariesEndpoints
                 Name: apiary.Name,
                 Latitude: apiary.Coordinate.Latitude,
                 Longitude: apiary.Coordinate.Longitude)),
-            error => Results.Problem());
+            Problem.HandleProblem);
     }
 
     public static async Task<IResult> GetApiaries(ISender sender)
@@ -67,6 +68,6 @@ public static class ApiariesEndpoints
                     Name: apiary.Name,
                     Latitude: apiary.Coordinate.Latitude,
                     Longitude: apiary.Coordinate.Longitude))),
-            error => Results.Problem());
+            Problem.HandleProblem);
     }
 }
