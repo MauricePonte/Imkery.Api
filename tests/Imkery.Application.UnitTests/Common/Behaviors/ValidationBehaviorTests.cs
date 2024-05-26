@@ -9,6 +9,7 @@ using Imkery.TestShared;
 using Imkery.TestShared.Apiaries.Commands;
 using MediatR;
 using NSubstitute;
+using Xunit;
 
 namespace Imkery.Application.UnitTests;
 
