@@ -3,7 +3,7 @@ using FluentValidation;
 using MediatR;
 
 namespace Imkery.Application.Common.Behaviors;
-internal class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
+public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
     where TResponse : IErrorOr
