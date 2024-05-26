@@ -1,7 +1,7 @@
 using Imkery.Domain.Apiaries;
 using Imkery.Domain.Locations;
 
-namespace Imkery.TestShared;
+namespace Imkery.TestShared.Apiaries;
 
 public class ApiaryBuilder
 {

@@ -2,7 +2,6 @@ using FluentAssertions;
 using Imkery.Domain.Apiaries;
 using Imkery.Domain.Hives;
 using Imkery.Domain.Locations;
-using Xunit;
 
 namespace Imkery.Domain.UnitTests.Apiaries;
 
