@@ -39,7 +39,7 @@ public class ValidationBehaviorTests
         _nextBehavior.Invoke().Returns(apiary);
 
         // Act 
-        var result = await _sut.Handle(command, _nextBehavior, Arg.Any<CancellationToken>());
+        var result = await _sut.Handle(command, _nextBehavior, default);
 
         // Assert
         result.IsError.Should().BeFalse();
