@@ -15,7 +15,6 @@ public class ValidationBehaviorTests
 {
     private readonly RequestHandlerDelegate<ErrorOr<Apiary>> _nextBehavior;
     private readonly IValidator<CreateApiaryCommand> _validator;
-    private readonly ValidationResult _validationResult;
 
     private readonly ValidationBehavior<CreateApiaryCommand, ErrorOr<Apiary>> _sut;
 
@@ -23,7 +22,6 @@ public class ValidationBehaviorTests
     {
         _nextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Apiary>>>();
         _validator = Substitute.For<IValidator<CreateApiaryCommand>>();
-        _validationResult = Substitute.For<ValidationResult>();
 
         _sut = new ValidationBehavior<CreateApiaryCommand, ErrorOr<Apiary>>(_validator);
     }
@@ -34,12 +32,10 @@ public class ValidationBehaviorTests
         // Arrange
         var command = ApiaryCommandsFactory.CreateApiaryCommand();
         var apiary = new ApiaryBuilder().Build();
-
-        _validationResult.IsValid.Returns(true);
         
         _validator
             .ValidateAsync(command, Arg.Any<CancellationToken>())
-            .Returns(_validationResult);
+            .Returns(new ValidationResult());
 
         _nextBehavior.Invoke().Returns(apiary);
 
@@ -52,21 +48,25 @@ public class ValidationBehaviorTests
     }
 
     [Fact]
-    public async Task InvokeBehavior_ShouldReturnErrors_WhenValidatorResultIsInvalid()
+    public async Task InvokeBehavior_ShouldReturnErrors_WhenValidatorResultIsNotValid()
     {
         // Arrange
         var command = ApiaryCommandsFactory.CreateApiaryCommand();
          
-        _validationResult.IsValid.Returns(false);
+        var validationFailureResults = new List<ValidationFailure> {
+            new ValidationFailure(propertyName: "test", errorMessage: "failed")
+        };
 
         _validator
             .ValidateAsync(command, Arg.Any<CancellationToken>())
-            .Returns(_validationResult);
+            .Returns(new ValidationResult(validationFailureResults));
 
         // Act
         var result = await _sut.Handle(command, _nextBehavior, default);
 
         // Assert
         result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be("test");
+        result.FirstError.Description.Should().Be("failed");
     }
 }
