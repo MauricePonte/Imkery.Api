@@ -15,12 +15,15 @@ public class ValidationBehaviorTests
 {
     private readonly RequestHandlerDelegate<ErrorOr<Apiary>> _nextBehavior;
     private readonly IValidator<CreateApiaryCommand> _validator;
+    private readonly ValidationResult _validationResult;
+
     private readonly ValidationBehavior<CreateApiaryCommand, ErrorOr<Apiary>> _sut;
 
     public ValidationBehaviorTests()
     {
         _nextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Apiary>>>();
         _validator = Substitute.For<IValidator<CreateApiaryCommand>>();
+        _validationResult = Substitute.For<ValidationResult>();
 
         _sut = new ValidationBehavior<CreateApiaryCommand, ErrorOr<Apiary>>(_validator);
     }
@@ -30,11 +33,13 @@ public class ValidationBehaviorTests
     {
         // Arrange
         var command = ApiaryCommandsFactory.CreateApiaryCommand();
-        var apiary = new ApiaryBuilder().Build();        
+        var apiary = new ApiaryBuilder().Build();
 
+        _validationResult.IsValid.Returns(true);
+        
         _validator
             .ValidateAsync(command, Arg.Any<CancellationToken>())
-            .Returns(new ValidationResult());
+            .Returns(_validationResult);
 
         _nextBehavior.Invoke().Returns(apiary);
 
@@ -44,5 +49,24 @@ public class ValidationBehaviorTests
         // Assert
         result.IsError.Should().BeFalse();
         result.Value.Should().BeEquivalentTo(apiary);
+    }
+
+    [Fact]
+    public async Task InvokeBehavior_ShouldReturnErrors_WhenValidatorResultIsInvalid()
+    {
+        // Arrange
+        var command = ApiaryCommandsFactory.CreateApiaryCommand();
+         
+        _validationResult.IsValid.Returns(false);
+
+        _validator
+            .ValidateAsync(command, Arg.Any<CancellationToken>())
+            .Returns(_validationResult);
+
+        // Act
+        var result = await _sut.Handle(command, _nextBehavior, default);
+
+        // Assert
+        result.IsError.Should().BeTrue();
     }
 }
