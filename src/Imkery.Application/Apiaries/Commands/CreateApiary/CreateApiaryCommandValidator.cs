@@ -8,7 +8,7 @@ public class CreateApiaryCommandValidator
     public CreateApiaryCommandValidator()
     {
         RuleFor(x => x.Name)
-            .MinimumLength(1)
-            .MaximumLength(255);
+            .MinimumLength(3)
+            .MaximumLength(100);
     }
 }

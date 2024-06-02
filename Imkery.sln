@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.Application.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.TestShared", "tests\Imkery.TestShared\Imkery.TestShared.csproj", "{84777CF2-F33D-4964-A6AE-941FAA5D205E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.Application.SubcutaneousTests", "tests\Imkery.Application.SubcutaneousTests\Imkery.Application.SubcutaneousTests.csproj", "{569F5C77-762E-4BE8-A090-F0454F84A727}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.Application.IntegrationTests", "tests\Imkery.Application.IntegrationTests\Imkery.Application.IntegrationTests.csproj", "{569F5C77-762E-4BE8-A090-F0454F84A727}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
