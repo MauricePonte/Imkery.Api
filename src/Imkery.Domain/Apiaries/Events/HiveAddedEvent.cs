@@ -3,4 +3,4 @@ using Imkery.Domain.Hives;
 
 namespace Imkery.Domain.Apiaries.Events;
 
-public record HiveAddedEvent(Hive Hive) : IDomainEvent;
+public record HiveAddedEvent(Hive Hive) : IEventualConsistantDomainEvent;

@@ -3,8 +3,10 @@ using Imkery.Domain.Apiaries;
 using Imkery.Domain.Hives;
 using Imkery.Infrastructure.Apiaries.Persistence;
 using Imkery.Infrastructure.Common.Interceptors;
+using Imkery.Infrastructure.Common.Middlewares;
 using Imkery.Infrastructure.Common.Persistence;
 using Imkery.Infrastructure.Hives.Persistence;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,13 +25,13 @@ public static class DependencyInjection
 
     private static IServiceCollection AddApplicationDbContext(this IServiceCollection services)
     {
-        services.AddScoped<PublishDomainEventsInterceptor>();
         services.AddDbContext<ApplicationDbContext>((serviceProvider, options) =>
         {
             options.UseSqlite("Data source = Imkery.db");
             options.AddInterceptors(serviceProvider.GetRequiredService<PublishDomainEventsInterceptor>());
         });
 
+        services.AddScoped<PublishDomainEventsInterceptor>();
         services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<ApplicationDbContext>());
 
         return services;
@@ -52,5 +54,10 @@ public static class DependencyInjection
             dbContext?.Database.EnsureDeleted();
             dbContext?.Database.EnsureCreated();
         }
+    }
+
+    public static void AddInfrastructureMiddleware(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<EventualConsistancyMiddleware>();
     }
 }
