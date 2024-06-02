@@ -9,14 +9,13 @@ internal class EventualConsistancyMiddleware(RequestDelegate _next)
 {
     public async Task InvokeAsync(HttpContext context, IPublisher publisher, ApplicationDbContext applicationDbContext)
     {
-        var transaction = await applicationDbContext.Database.BeginTransactionAsync();
-
-        try
+        context.Response.OnCompleted(async () =>
         {
-            context.Response.OnCompleted(async () =>
+            var transaction = await applicationDbContext.Database.BeginTransactionAsync();
+            try
             {
                 if (context.Items.TryGetValue("DomainEventsQueue", out var value) &&
-                    value is Queue<IDomainEvent> domainEventsQueue)
+                        value is Queue<IDomainEvent> domainEventsQueue)
                 {
                     while (domainEventsQueue!.TryDequeue(out var domainEvent))
                     {
@@ -25,17 +24,16 @@ internal class EventualConsistancyMiddleware(RequestDelegate _next)
                 }
 
                 await transaction.CommitAsync();
-            });
-        }
-        catch
-        {
-            //TODO: Add some type of errorHandling
-        }
-        finally
-        {
-            await transaction.DisposeAsync();
-        }
-
+            }
+            catch
+            {
+                throw; // This is picked up by the ExceptionBehavior?
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
+            }
+        });
 
         await _next(context);
     }
