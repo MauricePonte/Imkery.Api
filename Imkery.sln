@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.Application.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.TestShared", "tests\Imkery.TestShared\Imkery.TestShared.csproj", "{84777CF2-F33D-4964-A6AE-941FAA5D205E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Imkery.Application.SubcutaneousTests", "tests\Imkery.Application.SubcutaneousTests\Imkery.Application.SubcutaneousTests.csproj", "{569F5C77-762E-4BE8-A090-F0454F84A727}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{84777CF2-F33D-4964-A6AE-941FAA5D205E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84777CF2-F33D-4964-A6AE-941FAA5D205E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84777CF2-F33D-4964-A6AE-941FAA5D205E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{569F5C77-762E-4BE8-A090-F0454F84A727}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{569F5C77-762E-4BE8-A090-F0454F84A727}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{569F5C77-762E-4BE8-A090-F0454F84A727}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{569F5C77-762E-4BE8-A090-F0454F84A727}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{3C31F670-5EFC-4EB7-85CD-CE3DF25D35C3} = {2421EEC0-AF70-46F0-A5F3-9D05564945C5}
 		{69C6DCF1-3C40-47D3-BA82-30EEDB8547A1} = {2421EEC0-AF70-46F0-A5F3-9D05564945C5}
 		{84777CF2-F33D-4964-A6AE-941FAA5D205E} = {2421EEC0-AF70-46F0-A5F3-9D05564945C5}
+		{569F5C77-762E-4BE8-A090-F0454F84A727} = {2421EEC0-AF70-46F0-A5F3-9D05564945C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A744D63D-5FFC-40E8-B249-93A8181E41D5}

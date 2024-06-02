@@ -21,4 +21,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Imkery.Application\Imkery.Application.csproj" />
+    <ProjectReference Include="..\Imkery.TestShared\Imkery.TestShared.csproj" />
+  </ItemGroup>
+
 </Project>
