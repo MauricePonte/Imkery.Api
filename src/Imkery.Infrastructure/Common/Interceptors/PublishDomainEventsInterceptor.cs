@@ -17,12 +17,44 @@ internal class PublishDomainEventsInterceptor(IPublisher _publisher, IHttpContex
 
     public override async ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
+        if (EventualConsistencyIsRequired())
+        {
+            HandleEventualConsistantDomainEvents(eventData.Context);
+        }
         await HandleTransactionalDomainEvents(eventData.Context);
-        HandleEventualConsistantDomainEvents(eventData.Context);
+
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private async Task HandleTransactionalDomainEvents(DbContext? dbContext)
+    // This means the API request is not finished and the user is waiting.
+    private bool EventualConsistencyIsRequired() => _httpContext.HttpContext is null; 
+
+    private void HandleEventualConsistantDomainEvents(DbContext? dbContext)
+    {
+        if (dbContext is null)
+        {
+            return;
+        }
+
+        var domainEvents = dbContext.ChangeTracker.Entries<Entity>()
+            .Select(entry => entry.Entity)
+            .SelectMany(entity =>
+            {
+                return entity.PopEventualConsistantDomainEvents();
+            })
+            .ToList();
+
+        var domainEventsQueue = _httpContext.HttpContext!.Items.TryGetValue("DomainEventsQueue", out var value) &&
+            value is Queue<IDomainEvent> exsistingDomainEvents
+            ? exsistingDomainEvents
+            : [];
+
+        domainEvents.ForEach(domainEventsQueue.Enqueue);
+
+        _httpContext.HttpContext!.Items["DomainEventsQueue"] = domainEventsQueue;
+    }
+
+        private async Task HandleTransactionalDomainEvents(DbContext? dbContext)
     {
         if (dbContext is null)
         {
@@ -41,30 +73,5 @@ internal class PublishDomainEventsInterceptor(IPublisher _publisher, IHttpContex
         {
             await _publisher.Publish(domainEvent);
         }
-    }
-
-    private void HandleEventualConsistantDomainEvents(DbContext? dbContext)
-    {
-        if (dbContext is null)
-        {
-            return;
-        }
-
-        var domainEvents = dbContext.ChangeTracker.Entries<Entity>()
-            .Select(entry => entry.Entity)
-            .SelectMany(entity => 
-            {
-                return entity.PopEventualConsistantDomainEvents();
-            })
-            .ToList();
-
-        var domainEventsQueue = _httpContext.HttpContext!.Items.TryGetValue("DomainEventsQueue", out var value) &&
-            value is Queue<IDomainEvent> exsistingDomainEvents
-            ? exsistingDomainEvents
-            : [];
-        
-        domainEvents.ForEach(domainEventsQueue.Enqueue);
-
-        _httpContext.HttpContext!.Items["DomainEventsQueue"] = domainEventsQueue;
     }
 }

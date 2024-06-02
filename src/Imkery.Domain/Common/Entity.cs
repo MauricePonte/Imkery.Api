@@ -16,15 +16,16 @@ public abstract class Entity
 
     public List<IDomainEvent> PopTransactionalDomainEvents() 
     {
-        var transactionalDomainEvents = _domainEvents.Where(domainEvent => domainEvent is ITransactionalDomainEvent).ToList();
-        _domainEvents.RemoveAll(domainEvent => domainEvent is ITransactionalDomainEvent);
+        var transactionalDomainEvents = _domainEvents.ToList();
+        _domainEvents.Clear();
         return transactionalDomainEvents;
     }
 
     public List<IDomainEvent> PopEventualConsistantDomainEvents()
     {
-        var eventualConsistantDomainEvents = _domainEvents.ToList();
-        _domainEvents.Clear();
+
+        var eventualConsistantDomainEvents = _domainEvents.Where(domainEvent => domainEvent is IEventualConsistantDomainEvent).ToList();
+        _domainEvents.RemoveAll(domainEvent => domainEvent is IEventualConsistantDomainEvent);
         return eventualConsistantDomainEvents;
     }
 
