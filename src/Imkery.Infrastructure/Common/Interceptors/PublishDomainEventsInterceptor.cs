@@ -21,13 +21,14 @@ internal class PublishDomainEventsInterceptor(IPublisher _publisher, IHttpContex
         {
             HandleEventualConsistantDomainEvents(eventData.Context);
         }
+        
         await HandleTransactionalDomainEvents(eventData.Context);
 
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
     // This means the API request is not finished and the user is waiting.
-    private bool EventualConsistencyIsRequired() => _httpContext.HttpContext is null; 
+    private bool EventualConsistencyIsRequired() => _httpContext.HttpContext is not null; 
 
     private void HandleEventualConsistantDomainEvents(DbContext? dbContext)
     {
